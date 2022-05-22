@@ -10,7 +10,7 @@
     "sourceMap": true,
     "declaration": true,
     "outDir": "./dist",
-    "baseUrl": "./src",
+    "baseUrl": "./apps",
     "skipLibCheck": true,
   }
 }
