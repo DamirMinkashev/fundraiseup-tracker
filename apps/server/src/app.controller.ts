@@ -1,15 +1,16 @@
-import { Controller, Get, Res } from "@nestjs/common";
+import { Controller, Get, Header, Res } from "@nestjs/common";
 import { AppService } from "./app.service";
 import { Response } from "express";
+import * as path from "path";
 
 @Controller()
 export class AppController {
 	constructor(private readonly appService: AppService) {}
 
 	@Get("/")
+	@Header("Content-Type", "application/javascript")
 	root(@Res() res: Response) {
-		res.status(200).send({
-			test: "2213",
-		});
+		const filePath = path.join(__dirname, "..", "..", "tracker.js");
+		return res.sendFile(filePath);
 	}
 }

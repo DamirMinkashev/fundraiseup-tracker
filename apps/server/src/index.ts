@@ -1,5 +1,4 @@
 import Tracker from "./tracker/Tracker";
 
-const tracker = new Tracker();
-
-export default tracker;
+(globalThis as typeof globalThis & { tracker: Tracker }).tracker =
+	new Tracker();

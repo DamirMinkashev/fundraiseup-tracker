@@ -1,14 +1,8 @@
 <html>
 <head>
     <title>Demo page</title>
-
-    <script apps="http://localhost:8001/"></script>
+	  <script src="http://localhost:8001/"></script>
     <script>
-        let tracker = {
-            track: (args) => {
-                console.log(args);
-            }
-        }
         tracker.track('pageview');
         tracker.track('test', 'one', 'two', 'three');
     </script>
