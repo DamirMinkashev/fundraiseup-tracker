@@ -6,5 +6,5 @@ export type TrackerEvent = {
 	tags: string[];
 	url: string;
 	title: string;
-	ts: string;
+	ts?: string;
 };

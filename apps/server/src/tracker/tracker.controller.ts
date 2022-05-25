@@ -1,4 +1,14 @@
-import { Body, Controller, Options, HttpCode, Post, Req } from '@nestjs/common';
+import {
+	Body,
+	Controller,
+	Options,
+	HttpCode,
+	Post,
+	Req,
+	UsePipes,
+	ValidationPipe,
+	ParseArrayPipe,
+} from '@nestjs/common';
 import { TrackerService } from './tracker.service';
 import { CreateEventDto } from './dto/create-event.dto';
 
@@ -8,7 +18,13 @@ export class TrackerController {
 
 	@Post('/track')
 	@HttpCode(200)
-	createEvents(@Body() events: CreateEventDto[]) {
+	createEvents(
+		@Body(
+			new ParseArrayPipe({ items: CreateEventDto }),
+			new ValidationPipe(),
+		)
+		events: CreateEventDto[],
+	) {
 		return this.service.createEventsFromList(events);
 	}
 }

@@ -1,31 +1,23 @@
 import AbstractTracker from './AbstractTracker';
-import TrackerStorage from './TrackerStorage';
 import { TrackerEvent } from './TrackerEvent';
 
 const INTERVAL_DELAY = 1000;
 
 export default class Tracker implements AbstractTracker {
-	private storage: TrackerStorage;
-
 	private eventList: TrackerEvent[];
 
 	private interval: number | undefined = undefined;
 
 	constructor() {
-		this.storage = new TrackerStorage();
-		this.eventList = this.storage.get();
+		this.eventList = [];
 
 		//This callback invoked when we:
 		//1.Refreshing page
 		//2.Closing page/browser
 		//3.Click to link (1.html, etc)
-		window.addEventListener('beforeunload', async (e) => {
-			if ((e.target as ActiveElement).activeElement.tagName === 'A')
-				return this.storage.set(this.eventList);
-
-			await this.fetchTracks();
+		window.addEventListener('beforeunload', async () => {
 			this.clearFetchInterval();
-			this.storage.clear();
+			if (this.eventList.length !== 0) await this.fetchTracks();
 		});
 	}
 
@@ -124,5 +116,3 @@ export default class Tracker implements AbstractTracker {
 		return `${sign}${tzHours < 10 ? '0' : ''}${tzHours}:00`;
 	}
 }
-
-type ActiveElement = EventTarget & { activeElement: Element };
