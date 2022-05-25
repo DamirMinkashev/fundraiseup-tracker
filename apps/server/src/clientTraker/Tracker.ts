@@ -1,6 +1,6 @@
-import AbstractTracker from "./AbstractTracker";
-import TrackerStorage from "./TrackerStorage";
-import { TrackerEvent } from "./Event";
+import AbstractTracker from './AbstractTracker';
+import TrackerStorage from './TrackerStorage';
+import { TrackerEvent } from './TrackerEvent';
 
 const INTERVAL_DELAY = 1000;
 
@@ -15,8 +15,12 @@ export default class Tracker implements AbstractTracker {
 		this.storage = new TrackerStorage();
 		this.eventList = this.storage.get();
 
-		window.addEventListener("beforeunload", async (e) => {
-			if ((e.target as ActiveElement).activeElement.tagName === "A")
+		//This callback invoked when we:
+		//1.Refreshing page
+		//2.Closing page/browser
+		//3.Click to link (1.html, etc)
+		window.addEventListener('beforeunload', async (e) => {
+			if ((e.target as ActiveElement).activeElement.tagName === 'A')
 				return this.storage.set(this.eventList);
 
 			await this.fetchTracks();
@@ -67,7 +71,7 @@ export default class Tracker implements AbstractTracker {
 	 */
 	private startFetchInterval(): number {
 		return window.setInterval(async () => {
-			await this.fetchTracks();
+			if (this.eventList.length !== 0) await this.fetchTracks();
 		}, INTERVAL_DELAY);
 	}
 
@@ -84,17 +88,19 @@ export default class Tracker implements AbstractTracker {
 	 * @private
 	 */
 	private async fetchTracks() {
-		return fetch("http://localhost:8001/track", {
-			method: "POST",
+		return fetch('http://localhost:8001/track', {
+			method: 'POST',
 			body: JSON.stringify(this.eventList),
 			headers: {
-				"Content-Type": "application/json",
+				'Content-Type': 'application/json',
 			},
 		})
 			.then((res) => {
 				if (res.ok) this.eventList = [];
 			})
-			.catch(() => {});
+			.catch(() => {
+				this.restartFetchInterval();
+			});
 	}
 
 	/**
@@ -103,7 +109,7 @@ export default class Tracker implements AbstractTracker {
 	 */
 	private getTimeStampWithTimeZone() {
 		const ts = new Date();
-		return ts.toISOString().replace("Z", this.prettyTimeZone(ts));
+		return ts.toISOString().replace('Z', this.prettyTimeZone(ts));
 	}
 
 	/**
@@ -113,9 +119,9 @@ export default class Tracker implements AbstractTracker {
 	 */
 	private prettyTimeZone(date: Date) {
 		const tz = date.getTimezoneOffset();
-		const sign = tz > 0 ? "-" : "+";
+		const sign = tz > 0 ? '-' : '+';
 		const tzHours = Math.abs(tz) / 60;
-		return `${sign}${tzHours < 10 ? "0" : ""}${tzHours}:00`;
+		return `${sign}${tzHours < 10 ? '0' : ''}${tzHours}:00`;
 	}
 }
 

@@ -7,4 +7,4 @@ export type TrackerEvent = {
 	url: string;
 	title: string;
 	ts: string;
-}
+};

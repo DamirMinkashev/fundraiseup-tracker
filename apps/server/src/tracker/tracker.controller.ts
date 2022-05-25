@@ -1,17 +1,14 @@
-import { Body, Controller, Header, HttpCode, Post } from "@nestjs/common";
-import { TrackerService } from "./tracker.service";
-import { CreateEventDto } from "./dto/create-event.dto";
+import { Body, Controller, Options, HttpCode, Post, Req } from '@nestjs/common';
+import { TrackerService } from './tracker.service';
+import { CreateEventDto } from './dto/create-event.dto';
 
 @Controller()
 export class TrackerController {
 	constructor(private readonly service: TrackerService) {}
 
-	@Post("/track")
+	@Post('/track')
 	@HttpCode(200)
-	createEvents(@Body() req: CreateEventDto[]) {
-		// req.on("data", (data) => {
-		// 	console.log(data.toString());
-		// });
-		console.log(req);
+	createEvents(@Body() events: CreateEventDto[]) {
+		return this.service.createEventsFromList(events);
 	}
 }

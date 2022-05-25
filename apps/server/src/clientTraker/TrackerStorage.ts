@@ -1,6 +1,6 @@
-import { TrackerEvent } from "./Event";
+import { TrackerEvent } from './TrackerEvent';
 
-const STORAGE_KEY = "eventList";
+const STORAGE_KEY = 'eventList';
 
 export default class TrackerStorage {
 	constructor() {}

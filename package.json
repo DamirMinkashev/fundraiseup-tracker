@@ -8,7 +8,7 @@
   "scripts": {
     "prebuild": "rimraf dist && node build.mjs",
     "build": "nest build",
-    "format": "prettier --write \\\"apps/**/*.ts\\\"",
+    "format": "prettier --write apps/**/*.ts",
     "client": "nest start --watch client",
     "server": "node build.mjs && nest start --watch server",
     "start": "nest start",
@@ -19,11 +19,13 @@
   "dependencies": {
     "@nestjs/common": "^8.0.0",
     "@nestjs/core": "^8.0.0",
+    "@nestjs/mongoose": "^9.1.0",
     "@nestjs/platform-express": "^8.0.0",
     "@nestjs/serve-static": "^2.2.2",
     "class-validator": "^0.13.2",
     "esbuild": "^0.14.39",
     "hbs": "^4.2.0",
+    "mongoose": "^6.3.4",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^7.2.0"
